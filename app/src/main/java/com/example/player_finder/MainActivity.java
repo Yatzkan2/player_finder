@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu); // CHANGED THIS LINE
+        getMenuInflater().inflate(R.menu.appbar_menu, menu);
         return true;
     }
 
@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_language_toggle) {
             // Handle the language toggle button click here
-            Toast.makeText(this, "Language toggle clicked", Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.language_toggle_clicked); // Use your string resource ID here
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             toggleLanguage();
             return true;
         }

@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">מחפש שחקנים</string>
     <string name="language_toggle">אנגלית</string>
+    <string name="language_toggle_clicked">changed language to english</string>
+
 </resources>
