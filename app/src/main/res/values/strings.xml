@@ -9,7 +9,6 @@
     <string name="friends_fragment">friends fragment</string>
     <string name="my_games_fragment">my games fragment</string>
 
-    go_to_register
     <string name="go_to_login">Back to login</string>
     <string name="go_to_register">Not registered yet? click here to sign up</string>
     <string name="login">Login</string>
