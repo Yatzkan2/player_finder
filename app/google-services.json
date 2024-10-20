@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926558366521",
+    "project_id": "player-finder-6218a",
+    "storage_bucket": "player-finder-6218a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926558366521:android:65ce1fbfdcb0b6a1bd96e8",
+        "android_client_info": {
+          "package_name": "com.example.player_finder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlbsMjrLhxMyHId0x2mgkWkAE3dmU2s_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
