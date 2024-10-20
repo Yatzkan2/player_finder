@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/profile"
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/baseline_person_24"
+        />
+    <item android:title="@string/friends"
+        android:id="@+id/nav_friends"
+        android:icon="@drawable/baseline_people_24"/>
+    <item android:title="@string/my_games"
+        android:id="@+id/nav_my_games"
+        android:icon="@drawable/baseline_games_24"/>
+</menu>

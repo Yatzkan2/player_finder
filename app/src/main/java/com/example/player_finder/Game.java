@@ -1,8 +1,8 @@
 package com.example.player_finder;
 
 public class Game {
-    private String id;
-    private String title;
+    private final String id;
+    private final String title;
 
     public Game(String id, String title) {
         this.id = id;

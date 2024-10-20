@@ -3,5 +3,38 @@
     <string name="app_name">מחפש שחקנים</string>
     <string name="language_toggle">אנגלית</string>
     <string name="language_toggle_clicked">changed language to english</string>
+    <string name="login">התחבר</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="menu">Menu</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="profile">פרופיל</string>
+    <string name="friends">חברים</string>
+    <string name="my_games">המשחקים שלי</string>
+    <string name="profile_fragment">עמוד פרופיל</string>
+    <string name="friends_fragment">עמוד חברים</string>
+    <string name="my_games_fragment">עמוד המשחקים שלי</string>
+
+    <string name="go_to_login">חזרה למסך התחברות</string>
+    <string name="go_to_register">לא רשום\ה עדיין? להרשמה לחת כאן</string>
+    <string name="login">התחבר</string>
+    <string name="email">אימייל</string>
+    <string name="password">סיסמא</string>
+    <string name="register">הרשמה</string>
+    <string name="username">שם משתמש</string>
+    <string name="enter_password">הכנס סיסמא</string>
+    <string name="enter_email">הכנס אימייל</string>
+    <string name="click_to_login">לחץ להתחברות</string>
+    <string name="click_to_register">לחץ להרשמה</string>
+    <string name="menu">תפריט</string>
+    <string name="confirm_password">אישור סיסמא</string>
+    <string name="title_activity_base">BaseActivity</string>
 
 </resources>

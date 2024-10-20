@@ -7,8 +7,4 @@
     android:background="@color/design_default_color_primary"
     android:id="@+id/myToolBar"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    app:menu="@menu/appbar_menu"
-    >
-
-
-</androidx.appcompat.widget.Toolbar>
+    app:menu="@menu/appbar_menu"/>
