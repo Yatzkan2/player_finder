@@ -3,17 +3,6 @@
     <string name="app_name">מחפש שחקנים</string>
     <string name="language_toggle">אנגלית</string>
     <string name="language_toggle_clicked">changed language to english</string>
-    <string name="login">התחבר</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="register">Register</string>
-    <string name="username">Username</string>
-    <string name="enter_password">Enter Password</string>
-    <string name="enter_email">Enter Email</string>
-    <string name="click_to_login">Click to login</string>
-    <string name="click_to_register">Click to register</string>
-    <string name="menu">Menu</string>
-    <string name="confirm_password">Confirm Password</string>
 
     <string name="profile">פרופיל</string>
     <string name="friends">חברים</string>
@@ -36,5 +25,14 @@
     <string name="menu">תפריט</string>
     <string name="confirm_password">אישור סיסמא</string>
     <string name="title_activity_base">BaseActivity</string>
+
+    <string name="prompt_email">אימייל</string>
+    <string name="prompt_password">סיסמא</string>
+    <string name="action_sign_in">כניסה או הרשמה</string>
+    <string name="action_sign_in_short">כניסה</string>
+    <string name="welcome">שלום !</string>
+    <string name="invalid_username">משתמש לא חוקי</string>
+    <string name="invalid_password">סיסמא חייבת םחות מ 5 תווים</string>
+    <string name="login_failed">כניסה נכשלה</string>
 
 </resources>
