@@ -13,5 +13,6 @@
     <string name="click_to_register">Click to register</string>
     <string name="menu">Menu</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="title_activity_base">BaseActivity</string>
 
 </resources>
