@@ -12,5 +12,6 @@
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to register</string>
     <string name="menu">Menu</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>
