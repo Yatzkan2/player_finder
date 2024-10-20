@@ -6,4 +6,9 @@
         android:id="@+id/action_language_toggle"
         android:title="@string/language_toggle"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_menu"
+        android:title="@string/menu"
+        app:showAsAction="always" />
+
 </menu>

@@ -1,9 +1,11 @@
 package com.example.player_finder;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,10 +32,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        // Button functionality
+        findViewById(R.id.register_button).setOnClickListener(new View.OnClickListener() { // CHANGED THIS LINE
+            @Override
+            public void onClick(View view) {
+                // Redirect to RegisterActivity
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class); // CHANGED THIS LINE
+                startActivity(intent); // CHANGED THIS LINE
+            }
+        });
+
+        findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() { // CHANGED THIS LINE
+            @Override
+            public void onClick(View view) {
+                // Redirect to LoginActivity
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class); // CHANGED THIS LINE
+                startActivity(intent); // CHANGED THIS LINE
+            }
         });
     }
 
@@ -46,10 +68,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_language_toggle) {
-            // Handle the language toggle button click here
-            String message = getString(R.string.language_toggle_clicked); // Use your string resource ID here
+            // Handle language toggle
+            String message = getString(R.string.language_toggle_clicked);
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             toggleLanguage();
+            return true;
+        } else if (item.getItemId() == R.id.action_menu) {
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
