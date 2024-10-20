@@ -1,5 +1,6 @@
 package com.example.player_finder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 showSuccessMessage();
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class)); //should be changed to Home page
+                finish(); // Optional: Close LoginActivity
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -99,9 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void showSuccessMessage() {
         Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
-        // Optionally, navigate to another activity
-        // startActivity(new Intent(this, NextActivity.class));
-        // finish();
     }
 
     private void showErrorMessage(String message) {
