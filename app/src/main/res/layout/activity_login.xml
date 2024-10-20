@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/appbar"/>
-s
+    tools:context=".LoginFragment">
+
     <TextView
         android:id="@+id/login_title"
         android:layout_width="wrap_content"
@@ -16,8 +13,7 @@ s
         android:text="@string/login"
         android:textSize="24sp"
         android:textStyle="bold"
-
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
@@ -27,6 +23,8 @@ s
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress"
         app:layout_constraintTop_toBottomOf="@id/login_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +37,7 @@ s
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/password"
+        android:autofillHints="password"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/email_input"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +54,16 @@ s
         app:layout_constraintTop_toBottomOf="@id/password_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp" /> <!-- CHANGED THIS LINE -->
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/go_to_register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_to_register"
+        app:layout_constraintTop_toBottomOf="@id/login_submit_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

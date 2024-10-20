@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
-
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/appbar"/>
+    tools:context=".RegisterFragment">
 
     <TextView
         android:id="@+id/register_title"
@@ -17,7 +13,7 @@
         android:text="@string/register"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="50dp" />
@@ -27,6 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/username"
+        android:inputType="text"
+        android:autofillHints="username"
         app:layout_constraintTop_toBottomOf="@id/register_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +37,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/email"
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@id/register_username_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/password"
+        android:autofillHints="password"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/register_email_input"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/confirm_password"
+        android:autofillHints="password"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/register_password_input"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,5 +83,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/go_to_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_to_login"
+        app:layout_constraintTop_toBottomOf="@id/register_submit_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
