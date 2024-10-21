@@ -16,7 +16,7 @@
         <!-- AuthActivity as the launcher activity -->
         <activity
             android:name=".AuthActivity"
-            android:exported="true" > <!-- Set exported to true for launcher -->
+            android:exported="true">  <!-- Set exported to true for launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

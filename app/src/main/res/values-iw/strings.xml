@@ -11,6 +11,7 @@
     <string name="friends_fragment">עמוד חברים</string>
     <string name="my_games_fragment">עמוד המשחקים שלי</string>
 
+    <string name="logout_button_text">יציאה</string>
     <string name="go_to_login">חזרה למסך התחברות</string>
     <string name="go_to_register">לא רשום\ה עדיין? להרשמה לחת כאן</string>
     <string name="login">התחבר</string>
@@ -34,5 +35,10 @@
     <string name="invalid_username">משתמש לא חוקי</string>
     <string name="invalid_password">סיסמא חייבת םחות מ 5 תווים</string>
     <string name="login_failed">כניסה נכשלה</string>
+
+    <string name="search_game">חפש משחק</string>
+    <string name="search">חפש</string>
+    <string name="add_game">הוסף משחק</string>
+    <string name="add">הוסף</string>
 
 </resources>
