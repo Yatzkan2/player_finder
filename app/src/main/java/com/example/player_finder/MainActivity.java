@@ -2,62 +2,44 @@ package com.example.player_finder;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MenuItem;  // Ensure this is imported
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LanguageManager languageManager;
-    private FragmentNavigator fragmentNavigator;
+    private AppBarManager appBarManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set up AppBar (Toolbar)
+        // Initialize AppBarManager with "true" indicating this is MainActivity
         Toolbar toolbar = findViewById(R.id.myToolBar);
-        setSupportActionBar(toolbar);
+        appBarManager = new AppBarManager(this, true);
+        appBarManager.setupAppBar(toolbar);  // Set up the AppBar
 
-        // Set up Language Manager
-        languageManager = new LanguageManagerImpl(this);
-        languageManager.loadLanguage(); // Load saved language preference
-
-        // Set up Fragment Navigator
-        fragmentNavigator = new FragmentNavigatorImpl(getSupportFragmentManager(), R.id.frame_layout);
-        if (savedInstanceState == null) {
-            fragmentNavigator.navigateTo(new ProfileFragment()); // Default fragment
-        }
-
-        // Set up BottomNavigationView
+        // Initialize BottomNavManager locally
+        BottomNavManager bottomNavManager = new BottomNavManager(getSupportFragmentManager(), R.id.frame_layout);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
-        bottomNav.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_profile) {
-                fragmentNavigator.navigateTo(new ProfileFragment());
-            } else if (item.getItemId() == R.id.nav_my_games) {
-                fragmentNavigator.navigateTo(new MyGamesFragment());
-            } else if (item.getItemId() == R.id.nav_friends) {
-                fragmentNavigator.navigateTo(new FriendsFragment());
-            }
-            return true;
-        });
+        bottomNavManager.setupBottomNavigation(bottomNav);  // Set up BottomNavigationView
+
+        // Default fragment on initial load
+        if (savedInstanceState == null) {
+            bottomNavManager.setupBottomNavigation(bottomNav);  // Load the default fragment
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu);
-        return true;
+        return appBarManager.onCreateOptionsMenu(menu);  // Delegate menu inflation to AppBarManager
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_language_toggle) {
-            languageManager.toggleLanguage(); // Toggle language
-            recreate(); // Recreate activity to apply new language
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return appBarManager.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);  // Delegate to AppBarManager
     }
 }

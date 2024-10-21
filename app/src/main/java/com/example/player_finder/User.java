@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class User {
-    private String id;
+    private final String id;
     private String username;
     private String email;
     private String password;
-    private List<User> friendsList;
-    private List<Game> gamesList;
+    private final List<User> friendsList;
+    private final List<Game> gamesList;
 
     public User(String username, String email, String password) {
         this.id = UUID.randomUUID().toString();
