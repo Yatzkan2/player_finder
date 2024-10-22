@@ -17,6 +17,12 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_auth_activity);
 
+        // COMMENT OUT THESE LINES AFTER A SINGLE SEEDING OF THE DATABASE
+        //###############################################
+        //DatabaseManager dbManager = new DatabaseManager();
+        //dbManager.seedDatabase();
+        //###############################################
+
         // Initialize AppBarManager with "false" indicating this is AuthActivity
         Toolbar toolbar = findViewById(R.id.myToolBar);
         appBarManager = new AppBarManager(this, false);
