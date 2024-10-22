@@ -31,9 +31,9 @@ public class GamesFragment extends Fragment {
 
         // Initialize the game list with some Game objects
         gameList = new ArrayList<>();
-        gameList.add(new Game("1", "Fortnite"));
-        gameList.add(new Game("2", "League of Legends"));
-        gameList.add(new Game("3", "Minecraft"));
+        gameList.add(new Game("Fortnite"));
+        gameList.add(new Game("League of Legends"));
+        gameList.add(new Game("Minecraft"));
         // Add more games as needed
 
         // Set up the adapter

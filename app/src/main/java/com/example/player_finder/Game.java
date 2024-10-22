@@ -1,11 +1,14 @@
 package com.example.player_finder;
 
+import java.util.UUID;
+
 public class Game {
     private final String id;
     private final String title;
 
-    public Game(String id, String title) {
-        this.id = id;
+    public Game(String title) {
+        this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
+
         this.title = title;
     }
 
