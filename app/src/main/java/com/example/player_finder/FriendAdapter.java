@@ -66,6 +66,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
                 notifyItemChanged(position); // Just refresh the item if in "All Friends"
             }
         });
+
+        // Chat button functionality
+        holder.buttonChat.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Chat button clicked for: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -77,11 +82,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     public static class FriendViewHolder extends RecyclerView.ViewHolder {
         TextView friendName; // TextView to show friend's name
         Button buttonAction; // Action button (Add/Remove)
+        Button buttonChat; // Chat button
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);
             friendName = itemView.findViewById(R.id.friend_username); // Adjust according to your layout
             buttonAction = itemView.findViewById(R.id.button_action); // Action button
+            buttonChat = itemView.findViewById(R.id.button_chat); // Chat button
         }
     }
 
