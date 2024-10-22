@@ -33,22 +33,22 @@ public class User {
     }
 
     // Add game by ID
-    public void addGame(String gameId) {
-        if (!gamesList.contains(gameId)) {
-            gamesList.add(gameId); // Add the game ID to the list
+    public void addGame(String gameTitle) {
+        if (!gamesList.contains(gameTitle)) {
+            gamesList.add(gameTitle); // Add the game ID to the list
             // Save to database if needed
         }
     }
 
     // Remove game by ID
-    public void removeGame(String gameId) {
-        gamesList.remove(gameId); // Remove the game ID from the list
+    public void removeGame(String gameTitle) {
+        gamesList.remove(gameTitle); // Remove the game ID from the list
         // Save to database if needed
     }
 
     // Check if game exists in user's list
-    public boolean hasGame(String gameId) {
-        return gamesList.contains(gameId); // Return true if game ID exists in the list
+    public boolean hasGame(String gameTitle) {
+        return gamesList.contains(gameTitle); // Return true if game ID exists in the list
     }
 
     //setters
