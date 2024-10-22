@@ -10,7 +10,8 @@ public class User {
     private String email;
     private String password;
     private final List<User> friendsList;
-    private final List<Game> gamesList;
+    private final List<String> gamesList; // Change from List<Game> to List<String> for game IDs
+
     // No-argument constructor required for Firestore deserialization
     public User() {
         this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
@@ -31,8 +32,23 @@ public class User {
         friendsList.add(friend);
     }
 
-    public void addGame(Game game) {
-        gamesList.add(game);
+    // Add game by ID
+    public void addGame(String gameId) {
+        if (!gamesList.contains(gameId)) {
+            gamesList.add(gameId); // Add the game ID to the list
+            // Save to database if needed
+        }
+    }
+
+    // Remove game by ID
+    public void removeGame(String gameId) {
+        gamesList.remove(gameId); // Remove the game ID from the list
+        // Save to database if needed
+    }
+
+    // Check if game exists in user's list
+    public boolean hasGame(String gameId) {
+        return gamesList.contains(gameId); // Return true if game ID exists in the list
     }
 
     public void setPassword(String password) {
@@ -67,7 +83,7 @@ public class User {
         return friendsList;
     }
 
-    public List<Game> getGamesList() {
-        return gamesList;
+    public List<String> getGamesList() {
+        return gamesList; // Return the list of game IDs
     }
 }

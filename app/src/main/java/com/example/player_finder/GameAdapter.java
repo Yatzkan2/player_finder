@@ -3,7 +3,7 @@ package com.example.player_finder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,11 +15,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
 
     private final List<Game> gameList;
     private final List<Game> gameListFull; // To keep a copy of the full list for filtering
+    private final User currentUser; // Reference to the current user
 
     // Constructor
-    public GameAdapter(List<Game> gameList) {
+    public GameAdapter(List<Game> gameList, User currentUser) {
         this.gameList = gameList;
         this.gameListFull = new ArrayList<>(gameList); // Create a copy of the full list
+        this.currentUser = currentUser; // Pass the current user for managing games
     }
 
     @NonNull
@@ -35,10 +37,22 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         Game game = gameList.get(position);
         holder.gameTitle.setText(game.getTitle());
 
-        // Add click listener for itemView
-        holder.itemView.setOnClickListener(v -> {
-            // Display Toast with the game's title when clicked
-            Toast.makeText(v.getContext(), "Clicked: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+        // Check if the game is already in the user's list
+        boolean isGameInUserList = currentUser.hasGame(game.getId());
+
+        // Set button text based on game presence
+        holder.buttonAction.setText(isGameInUserList ? "Remove" : "Add");
+
+        holder.buttonAction.setOnClickListener(v -> {
+            if (isGameInUserList) {
+                currentUser.removeGame(game.getId()); // Remove the game
+
+                Toast.makeText(v.getContext(), "Removed: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+            } else {
+                currentUser.addGame(game.getId()); // Add the game
+                Toast.makeText(v.getContext(), "Added: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+            notifyItemChanged(position); // Refresh the item to update button text
         });
     }
 
@@ -50,10 +64,12 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     // ViewHolder class for RecyclerView
     public static class GameViewHolder extends RecyclerView.ViewHolder {
         TextView gameTitle;
+        Button buttonAction; // Action button (Add/Remove)
 
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
             gameTitle = itemView.findViewById(R.id.game_title); // Adjust according to your layout
+            buttonAction = itemView.findViewById(R.id.button_action); // Action button
         }
     }
 
