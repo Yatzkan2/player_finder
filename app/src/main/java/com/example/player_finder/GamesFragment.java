@@ -40,7 +40,6 @@ public class GamesFragment extends Fragment {
             CompletableFuture<User> fetchUserFuture = databaseManager.fetchUserById(userId);
             fetchUserFuture.thenAccept(user -> {
                 currentUser = user; // Store the current user
-                user.setId(userId); // THIS IS VERY BAD PRACTICE, SHOULD GET RID OF THIS ID STUFF
 
                 // Now fetch the games after getting the current user
                 CompletableFuture<List<Game>> fetchGamesFuture = databaseManager.fetchAllGames();
@@ -51,7 +50,7 @@ public class GamesFragment extends Fragment {
                     gameList = fetchedGames;
 
                     // Set up the adapter with the fetched games and the current user
-                    gameAdapter = new GameAdapter(gameList, currentUser);
+                    gameAdapter = new GameAdapter(gameList, currentUser, userId);
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     recyclerView.setAdapter(gameAdapter);

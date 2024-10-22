@@ -16,14 +16,16 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     private final List<Game> gameList;
     private final List<Game> gameListFull; // To keep a copy of the full list for filtering
     private final User currentUser; // Reference to the current user
+    private final String userId; // User ID of the current user
     private DatabaseManager databaseManager; // Database manager instance
 
 
     // Constructor
-    public GameAdapter(List<Game> gameList, User currentUser) {
+    public GameAdapter(List<Game> gameList, User currentUser, String userId) {
         this.gameList = gameList;
         this.gameListFull = new ArrayList<>(gameList); // Create a copy of the full list
         this.currentUser = currentUser; // Pass the current user for managing games
+        this.userId = userId; // Store the user ID
         this.databaseManager = new DatabaseManager(); // Initialize DatabaseManager
 
     }
@@ -50,11 +52,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         holder.buttonAction.setOnClickListener(v -> {
             if (isGameInUserList) {
                 currentUser.removeGame(game.getId()); // Remove the game
-                databaseManager.updateUserFieldById(currentUser.getId(), "gamesList", currentUser.getGamesList());
+                databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
                 Toast.makeText(v.getContext(), "Removed: " + game.getTitle(), Toast.LENGTH_SHORT).show();
             } else {
                 currentUser.addGame(game.getId()); // Add the game
-                databaseManager.updateUserFieldById(currentUser.getId(), "gamesList", currentUser.getGamesList());
+                databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
                 Toast.makeText(v.getContext(), "Added: " + game.getTitle(), Toast.LENGTH_SHORT).show();
             }
             notifyItemChanged(position); // Refresh the item to update button text
