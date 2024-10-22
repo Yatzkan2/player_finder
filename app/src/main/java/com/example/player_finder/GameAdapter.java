@@ -3,23 +3,33 @@ package com.example.player_finder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> {
 
     private final List<Game> gameList;
     private final List<Game> gameListFull; // To keep a copy of the full list for filtering
+    private final User currentUser; // Reference to the current user
+    private final String userId; // User ID of the current user
+    private DatabaseManager databaseManager; // Database manager instance
+    private boolean isShowingMyGames = false; // Flag to track if "My Games" is displayed
+
 
     // Constructor
-    public GameAdapter(List<Game> gameList) {
+    public GameAdapter(List<Game> gameList, User currentUser, String userId) {
         this.gameList = gameList;
         this.gameListFull = new ArrayList<>(gameList); // Create a copy of the full list
+        this.currentUser = currentUser; // Pass the current user for managing games
+        this.userId = userId; // Store the user ID
+        this.databaseManager = new DatabaseManager(); // Initialize DatabaseManager
+
     }
 
     @NonNull
@@ -35,10 +45,29 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         Game game = gameList.get(position);
         holder.gameTitle.setText(game.getTitle());
 
-        // Add click listener for itemView
-        holder.itemView.setOnClickListener(v -> {
-            // Display Toast with the game's title when clicked
-            Toast.makeText(v.getContext(), "Clicked: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+        // Check if the game is already in the user's list
+        boolean isGameInUserList = currentUser.hasGame(game.getTitle());
+
+        // Set button text based on game presence
+        holder.buttonAction.setText(isGameInUserList ? "Remove" : "Add");
+
+        holder.buttonAction.setOnClickListener(v -> {
+            if (isGameInUserList) {
+                currentUser.removeGame(game.getTitle()); // Remove the game
+                databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
+                Toast.makeText(v.getContext(), "Removed: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+            } else {
+                currentUser.addGame(game.getTitle()); // Add the game
+                databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
+                Toast.makeText(v.getContext(), "Added: " + game.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+            //notifyItemChanged(position); // Refresh the item to update button text
+            // Re-render based on current view
+            if (isShowingMyGames) {
+                showMyGames(); // Re-filter to show the updated "My Games" list
+            } else {
+                notifyItemChanged(position); // Just refresh the item if in "All Games"
+            }
         });
     }
 
@@ -50,13 +79,29 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     // ViewHolder class for RecyclerView
     public static class GameViewHolder extends RecyclerView.ViewHolder {
         TextView gameTitle;
+        Button buttonAction; // Action button (Add/Remove)
 
         public GameViewHolder(@NonNull View itemView) {
             super(itemView);
             gameTitle = itemView.findViewById(R.id.game_title); // Adjust according to your layout
+            buttonAction = itemView.findViewById(R.id.button_action); // Action button
         }
     }
 
+    // Method to show only the user's games
+    public void showMyGames() {
+        isShowingMyGames = true; // Track that we are in "My Games" mode
+        List<Game> filteredList = gameListFull.stream()
+                .filter(game -> currentUser.hasGame(game.getTitle()))
+                .collect(Collectors.toList());
+        applyListChanges(filteredList);
+    }
+
+    // Method to show all games
+    public void showAllGames() {
+        isShowingMyGames = false; // Track that we are in "All Games" mode
+        applyListChanges(gameListFull);
+    }
     // Filter method
     public void filter(String text) {
         List<Game> filteredList = new ArrayList<>();

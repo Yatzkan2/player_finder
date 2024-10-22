@@ -19,7 +19,7 @@ public class ProfileFragment extends Fragment {
         sessionManager = new UserSessionManager(requireContext());
 
         // Retrieve user data from the session
-        String userName = sessionManager.getUserName();
+        String userName = sessionManager.getUserId();
 
         // Find the TextView and set the user's name
         TextView userNameTextView = view.findViewById(R.id.username_textview);

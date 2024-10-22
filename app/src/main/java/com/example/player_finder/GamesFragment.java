@@ -11,14 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import android.widget.Button;
 
 public class GamesFragment extends Fragment {
 
     private GameAdapter gameAdapter;
     private List<Game> gameList; // Declare gameList for better scope
     private DatabaseManager databaseManager; // Declare DatabaseManager instance
+    private UserSessionManager userSessionManager; // Declare UserSessionManager instance
+    private User currentUser; // To hold the current user
+    private Button myGamesButton; // Declare My Games button
+    private boolean showingAllGames = true; // Flag to track the state of button
 
     @Nullable
     @Override
@@ -26,29 +33,43 @@ public class GamesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_games, container, false);
 
-        // Initialize RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Initialize UserSessionManager
+        userSessionManager = new UserSessionManager(getContext());
 
-        // Initialize DatabaseManager
-        databaseManager = new DatabaseManager(); // Assuming you have a default constructor
+        // Fetch the current user based on the stored user ID
+        String userId = userSessionManager.getUserId();
+        if (userId != null) {
+            databaseManager = new DatabaseManager(); // Initialize DatabaseManager
 
-        // Fetch games from database asynchronously
-        CompletableFuture<List<Game>> fetchGamesFuture = databaseManager.fetchAllGames();
+            // Fetch the current user from the database
+            CompletableFuture<User> fetchUserFuture = databaseManager.fetchUserById(userId);
+            fetchUserFuture.thenAccept(user -> {
+                currentUser = user; // Store the current user
 
-        // When the data is fetched, update the RecyclerView adapter
-        fetchGamesFuture.thenAccept(fetchedGames -> {
-            // Update game list and adapter
-            gameList = fetchedGames;
+                // Now fetch the games after getting the current user
+                CompletableFuture<List<Game>> fetchGamesFuture = databaseManager.fetchAllGames();
 
-            // Set up the adapter with the fetched games
-            gameAdapter = new GameAdapter(gameList);
-            recyclerView.setAdapter(gameAdapter);
-        }).exceptionally(ex -> {
-            // Handle any exceptions that occur during fetching
-            ex.printStackTrace();
-            return null;
-        });
+                // When the data is fetched, update the RecyclerView adapter
+                fetchGamesFuture.thenAccept(fetchedGames -> {
+                    // Update game list and adapter
+                    gameList = fetchedGames;
+
+                    // Set up the adapter with the fetched games and the current user
+                    gameAdapter = new GameAdapter(gameList, currentUser, userId);
+                    RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(gameAdapter);
+                }).exceptionally(ex -> {
+                    // Handle any exceptions that occur during fetching games
+                    ex.printStackTrace();
+                    return null;
+                });
+            }).exceptionally(ex -> {
+                // Handle any exceptions that occur during fetching user
+                ex.printStackTrace();
+                return null;
+            });
+        }
 
         // Initialize the SearchView and set up search filtering
         SearchView searchView = view.findViewById(R.id.searchView);
@@ -63,6 +84,20 @@ public class GamesFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 gameAdapter.filter(newText); // Apply filter as text changes
                 return false;
+            }
+        });
+
+        // Handle "My Games" button click to filter the user's games
+        myGamesButton = view.findViewById(R.id.myGamesButton);
+        myGamesButton.setOnClickListener(v -> {
+            if (showingAllGames) {
+                gameAdapter.showMyGames(); // Show only the user's games
+                myGamesButton.setText("All Games");
+                showingAllGames = false;
+            } else {
+                gameAdapter.showAllGames(); // Show all games again
+                myGamesButton.setText("My Games");
+                showingAllGames = true;
             }
         });
 
