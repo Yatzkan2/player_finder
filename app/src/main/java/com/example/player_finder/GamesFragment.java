@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import android.widget.Button;
 
 public class GamesFragment extends Fragment {
 
@@ -21,6 +24,8 @@ public class GamesFragment extends Fragment {
     private DatabaseManager databaseManager; // Declare DatabaseManager instance
     private UserSessionManager userSessionManager; // Declare UserSessionManager instance
     private User currentUser; // To hold the current user
+    private Button myGamesButton; // Declare My Games button
+    private boolean showingAllGames = true; // Flag to track the state of button
 
     @Nullable
     @Override
@@ -79,6 +84,20 @@ public class GamesFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 gameAdapter.filter(newText); // Apply filter as text changes
                 return false;
+            }
+        });
+
+        // Handle "My Games" button click to filter the user's games
+        myGamesButton = view.findViewById(R.id.myGamesButton);
+        myGamesButton.setOnClickListener(v -> {
+            if (showingAllGames) {
+                gameAdapter.showMyGames(); // Show only the user's games
+                myGamesButton.setText("All Games");
+                showingAllGames = false;
+            } else {
+                gameAdapter.showAllGames(); // Show all games again
+                myGamesButton.setText("My Games");
+                showingAllGames = true;
             }
         });
 

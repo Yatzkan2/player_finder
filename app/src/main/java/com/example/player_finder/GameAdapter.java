@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> {
 
@@ -80,6 +81,18 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         }
     }
 
+    // Method to show only the user's games
+    public void showMyGames() {
+        List<Game> filteredList = gameListFull.stream()
+                .filter(game -> currentUser.hasGame(game.getTitle()))
+                .collect(Collectors.toList());
+        applyListChanges(filteredList);
+    }
+
+    // Method to show all games
+    public void showAllGames() {
+        applyListChanges(gameListFull);
+    }
     // Filter method
     public void filter(String text) {
         List<Game> filteredList = new ArrayList<>();
