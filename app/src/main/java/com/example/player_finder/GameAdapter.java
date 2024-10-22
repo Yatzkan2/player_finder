@@ -44,18 +44,18 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         holder.gameTitle.setText(game.getTitle());
 
         // Check if the game is already in the user's list
-        boolean isGameInUserList = currentUser.hasGame(game.getId());
+        boolean isGameInUserList = currentUser.hasGame(game.getTitle());
 
         // Set button text based on game presence
         holder.buttonAction.setText(isGameInUserList ? "Remove" : "Add");
 
         holder.buttonAction.setOnClickListener(v -> {
             if (isGameInUserList) {
-                currentUser.removeGame(game.getId()); // Remove the game
+                currentUser.removeGame(game.getTitle()); // Remove the game
                 databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
                 Toast.makeText(v.getContext(), "Removed: " + game.getTitle(), Toast.LENGTH_SHORT).show();
             } else {
-                currentUser.addGame(game.getId()); // Add the game
+                currentUser.addGame(game.getTitle()); // Add the game
                 databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
                 Toast.makeText(v.getContext(), "Added: " + game.getTitle(), Toast.LENGTH_SHORT).show();
             }
