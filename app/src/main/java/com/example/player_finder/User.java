@@ -9,8 +9,15 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private List<User> friendsList;
-    private List<Game> gamesList;
+    private final List<String> friendsList;
+    private final List<String> gamesList; // Change from List<Game> to List<String> for game IDs
+
+    // No-argument constructor required for Firestore deserialization
+    public User() {
+        this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
+        this.friendsList = new ArrayList<>();
+        this.gamesList = new ArrayList<>();
+    }
 
     public User(String username, String email, String password) {
         this.id = UUID.randomUUID().toString();
@@ -21,14 +28,32 @@ public class User {
         this.gamesList = new ArrayList<>();
     }
 
-    public void addFriend(User friend) {
-        friendsList.add(friend);
+    public void addFriend(String username) {
+
+        friendsList.add(username);
+
     }
 
-    public void addGame(Game game) {
-        gamesList.add(game);
+    // Add game by ID
+    public void addGame(String gameTitle) {
+        if (!gamesList.contains(gameTitle)) {
+            gamesList.add(gameTitle); // Add the game ID to the list
+            // Save to database if needed
+        }
     }
 
+    // Remove game by ID
+    public void removeGame(String gameTitle) {
+        gamesList.remove(gameTitle); // Remove the game ID from the list
+        // Save to database if needed
+    }
+
+    // Check if game exists in user's list
+    public boolean hasGame(String gameTitle) {
+        return gamesList.contains(gameTitle); // Return true if game ID exists in the list
+    }
+
+    //setters
     public void setPassword(String password) {
         this.password = password;
     }
@@ -41,6 +66,11 @@ public class User {
         this.email = email;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    //getters
     public String getId() {
         return id;
     }
@@ -57,11 +87,19 @@ public class User {
         return password;
     }
 
-    public List<User> getFriendsList() {
+    public List<String> getFriendsList() {
         return friendsList;
     }
 
-    public List<Game> getGamesList() {
-        return gamesList;
+    public List<String> getGamesList() {
+        return gamesList; // Return the list of game IDs
+    }
+
+    public boolean isFriend(String username) {
+        return friendsList.contains(username);
+    }
+
+    public void removeFriend(String username) {
+        friendsList.remove(username);
     }
 }

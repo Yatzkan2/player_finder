@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">  <!-- Add this line -->
+
+    <!-- Language toggle -->
     <item
         android:id="@+id/action_language_toggle"
         android:title="@string/language_toggle"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_menu"
-        android:title="@string/menu"
-        app:showAsAction="always" />
+        app:showAsAction="never" />  <!-- Use app:showAsAction -->
 
+    <!-- Logout button -->
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout_button_text"
+        app:showAsAction="never" />  <!-- Use app:showAsAction -->
 </menu>

@@ -1,11 +1,19 @@
 package com.example.player_finder;
 
-public class Game {
-    private final String id;
-    private final String title;
+import java.util.UUID;
 
-    public Game(String id, String title) {
-        this.id = id;
+public class Game {
+    private String id;
+    private String title;
+
+    // No-argument constructor required for Firestore deserialization
+    public Game() {
+        //this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
+    }
+
+    public Game(String title) {
+        this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
+
         this.title = title;
     }
 

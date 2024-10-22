@@ -10,26 +10,28 @@ import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button; // Import Button
+
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class FriendsFragment extends Fragment {
+import android.widget.Button;
 
-    private FriendAdapter friendAdapter;
-    private List<User> userList; // Declare userList for better scope
+public class GamesFragment extends Fragment {
+
+    private GameAdapter gameAdapter;
+    private List<Game> gameList; // Declare gameList for better scope
     private DatabaseManager databaseManager; // Declare DatabaseManager instance
     private UserSessionManager userSessionManager; // Declare UserSessionManager instance
     private User currentUser; // To hold the current user
-    private Button myFriendsButton; // Declare My Friends button
-    private boolean showingAllFriends = true; // Flag to track the state of button
+    private Button myGamesButton; // Declare My Games button
+    private boolean showingAllGames = true; // Flag to track the state of button
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_friends, container, false);
+        View view = inflater.inflate(R.layout.fragment_games, container, false);
 
         // Initialize UserSessionManager
         userSessionManager = new UserSessionManager(getContext());
@@ -44,21 +46,21 @@ public class FriendsFragment extends Fragment {
             fetchUserFuture.thenAccept(user -> {
                 currentUser = user; // Store the current user
 
-                // Fetch users from database asynchronously
-                CompletableFuture<List<User>> fetchUsersFuture = databaseManager.fetchAllUsers();
+                // Now fetch the games after getting the current user
+                CompletableFuture<List<Game>> fetchGamesFuture = databaseManager.fetchAllGames();
 
                 // When the data is fetched, update the RecyclerView adapter
-                fetchUsersFuture.thenAccept(fetchedUsers -> {
-                    // Update user list and adapter
-                    userList = fetchedUsers;
+                fetchGamesFuture.thenAccept(fetchedGames -> {
+                    // Update game list and adapter
+                    gameList = fetchedGames;
 
-                    // Set up the adapter with the fetched users
-                    friendAdapter = new FriendAdapter(userList, currentUser, userId); // Pass current user if needed
+                    // Set up the adapter with the fetched games and the current user
+                    gameAdapter = new GameAdapter(gameList, currentUser, userId);
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    recyclerView.setAdapter(friendAdapter);
+                    recyclerView.setAdapter(gameAdapter);
                 }).exceptionally(ex -> {
-                    // Handle any exceptions that occur during fetching users
+                    // Handle any exceptions that occur during fetching games
                     ex.printStackTrace();
                     return null;
                 });
@@ -74,35 +76,31 @@ public class FriendsFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (friendAdapter != null) {
-                    friendAdapter.filter(query); // Apply filter on submit
-                }
+                gameAdapter.filter(query); // Apply filter on submit
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (friendAdapter != null) {
-                    friendAdapter.filter(newText); // Apply filter as text changes
-                }
+                gameAdapter.filter(newText); // Apply filter as text changes
                 return false;
             }
         });
 
-        // Handle "My Friends" button click to filter the user's friends
-        myFriendsButton = view.findViewById(R.id.myFriendsButton); // Ensure the button is present in the layout
-        myFriendsButton.setOnClickListener(v -> {
-            if (showingAllFriends) {
-                friendAdapter.showMyFriends(); // Show only the user's friends
-                myFriendsButton.setText("All Friends");
-                showingAllFriends = false;
+        // Handle "My Games" button click to filter the user's games
+        myGamesButton = view.findViewById(R.id.myGamesButton);
+        myGamesButton.setOnClickListener(v -> {
+            if (showingAllGames) {
+                gameAdapter.showMyGames(); // Show only the user's games
+                myGamesButton.setText("All Games");
+                showingAllGames = false;
             } else {
-                friendAdapter.showAllFriends(); // Show all friends again
-                myFriendsButton.setText("My Friends");
-                showingAllFriends = true;
+                gameAdapter.showAllGames(); // Show all games again
+                myGamesButton.setText("My Games");
+                showingAllGames = true;
             }
         });
 
-        return view; // Return the inflated view
+        return view;
     }
 }

@@ -9,6 +9,7 @@
     <string name="friends_fragment">friends fragment</string>
     <string name="my_games_fragment">my games fragment</string>
 
+    <string name="logout_button_text">Logout</string>
     <string name="go_to_login">Back to login</string>
     <string name="go_to_register">Not registered yet? click here to sign up</string>
     <string name="login">Login</string>
@@ -32,5 +33,17 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string name="search_game">Search game</string>
+    <string name="search">Search</string>
+    <string name="add_game">Add game</string>
+    <string name="add">Add</string>
+    <string name="friend_name">friend_name</string>
+    <string name="friend_email">friend_email</string>
+    <string name="game_title">game_title</string>
+    <string name="search_games">Search games...</string>
+    <string name="search_friends">Search friends...</string>
+    <string name="my_friends">my friends</string>
+    <string name="chat">Chat</string>
 
 </resources>
