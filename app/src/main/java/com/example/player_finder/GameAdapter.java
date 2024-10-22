@@ -19,6 +19,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     private final User currentUser; // Reference to the current user
     private final String userId; // User ID of the current user
     private DatabaseManager databaseManager; // Database manager instance
+    private boolean isShowingMyGames = false; // Flag to track if "My Games" is displayed
 
 
     // Constructor
@@ -60,7 +61,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                 databaseManager.updateUserFieldById(userId, "gamesList", currentUser.getGamesList());
                 Toast.makeText(v.getContext(), "Added: " + game.getTitle(), Toast.LENGTH_SHORT).show();
             }
-            notifyItemChanged(position); // Refresh the item to update button text
+            //notifyItemChanged(position); // Refresh the item to update button text
+            // Re-render based on current view
+            if (isShowingMyGames) {
+                showMyGames(); // Re-filter to show the updated "My Games" list
+            } else {
+                notifyItemChanged(position); // Just refresh the item if in "All Games"
+            }
         });
     }
 
@@ -83,6 +90,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
 
     // Method to show only the user's games
     public void showMyGames() {
+        isShowingMyGames = true; // Track that we are in "My Games" mode
         List<Game> filteredList = gameListFull.stream()
                 .filter(game -> currentUser.hasGame(game.getTitle()))
                 .collect(Collectors.toList());
@@ -91,6 +99,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
 
     // Method to show all games
     public void showAllGames() {
+        isShowingMyGames = false; // Track that we are in "All Games" mode
         applyListChanges(gameListFull);
     }
     // Filter method
