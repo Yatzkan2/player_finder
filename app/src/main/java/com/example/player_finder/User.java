@@ -11,6 +11,12 @@ public class User {
     private String password;
     private final List<User> friendsList;
     private final List<Game> gamesList;
+    // No-argument constructor required for Firestore deserialization
+    public User() {
+        this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
+        this.friendsList = new ArrayList<>();
+        this.gamesList = new ArrayList<>();
+    }
 
     public User(String username, String email, String password) {
         this.id = UUID.randomUUID().toString();

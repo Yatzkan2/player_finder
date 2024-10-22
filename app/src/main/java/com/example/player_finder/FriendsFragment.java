@@ -10,14 +10,14 @@ import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class FriendsFragment extends Fragment {
 
     private FriendAdapter friendAdapter;
-    private List<User> userList; // Declare userList here for better scope
+    private List<User> userList; // Declare userList for better scope
+    private DatabaseManager databaseManager; // Declare DatabaseManager instance
 
     @Nullable
     @Override
@@ -30,29 +30,42 @@ public class FriendsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize the user list with some User objects
-        userList = new ArrayList<>();
-        // Add sample users
-        userList.add(new User("John Doe", "john@example.com", "password123"));
-        userList.add(new User("Jane Smith", "jane@example.com", "password456"));
-        // Add more users as needed
+        // Initialize DatabaseManager
+        databaseManager = new DatabaseManager();  // Assuming you have a default constructor
 
-        // Set up the adapter
-        friendAdapter = new FriendAdapter(userList);
-        recyclerView.setAdapter(friendAdapter);
+        // Fetch users from database asynchronously
+        CompletableFuture<List<User>> fetchUsersFuture = databaseManager.fetchAllUsers();
+
+        // When the data is fetched, update the RecyclerView adapter
+        fetchUsersFuture.thenAccept(fetchedUsers -> {
+            // Update user list and adapter
+            userList = fetchedUsers;
+
+            // Set up the adapter with the fetched users
+            friendAdapter = new FriendAdapter(userList);
+            recyclerView.setAdapter(friendAdapter);
+        }).exceptionally(ex -> {
+            // Handle any exceptions that occur during fetching
+            ex.printStackTrace();
+            return null;
+        });
 
         // Initialize the SearchView and set up search filtering
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                friendAdapter.filter(query); // Apply filter on submit
+                if (friendAdapter != null) {
+                    friendAdapter.filter(query); // Apply filter on submit
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                friendAdapter.filter(newText); // Apply filter as text changes
+                if (friendAdapter != null) {
+                    friendAdapter.filter(newText); // Apply filter as text changes
+                }
                 return false;
             }
         });
