@@ -40,5 +40,7 @@
     <string name="search">חפש</string>
     <string name="add_game">הוסף משחק</string>
     <string name="add">הוסף</string>
+    <string name="friend_name">friend_name</string>
+    <string name="friend_email">friend_email</string>
 
 </resources>
