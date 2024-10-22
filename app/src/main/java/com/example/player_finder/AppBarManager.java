@@ -11,12 +11,14 @@ public class AppBarManager {
     private final AppCompatActivity activity;  // Cast directly to AppCompatActivity
     private final boolean isMainActivity;
     private final LanguageManager languageManager;
+    private UserSessionManager sessionManager;
 
     public AppBarManager(AppCompatActivity activity, boolean isMainActivity) {
         this.activity = activity;
         this.isMainActivity = isMainActivity;
         this.languageManager = new LanguageManagerImpl(activity);  // Initialize LanguageManager internally
         this.languageManager.loadLanguage();  // Load saved language preference
+        this.sessionManager = new UserSessionManager(activity);
     }
 
     // Set up the toolbar as the action bar and configure it
@@ -62,6 +64,8 @@ public class AppBarManager {
 
     // Method to handle logout action
     private void handleLogout() {
+        sessionManager.clearSession();
+
         Intent intent = new Intent(activity, AuthActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);

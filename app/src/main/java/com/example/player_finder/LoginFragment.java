@@ -21,6 +21,7 @@ public class LoginFragment extends Fragment {
     private EditText emailInput;
     private EditText passwordInput;
     private FirebaseFirestore firestore;
+    private UserSessionManager sessionManager;
 
     @Nullable
     @Override
@@ -33,8 +34,9 @@ public class LoginFragment extends Fragment {
         Button loginButton = view.findViewById(R.id.login_submit_button);
         Button goToRegisterButton = view.findViewById(R.id.go_to_register_button);
 
-        // Initialize Firebase
+        // Initialize Firestore and UserSessionManager
         firestore = FirebaseFirestore.getInstance();
+        sessionManager = new UserSessionManager(getContext());
 
         // Set login button click listener
         loginButton.setOnClickListener(v -> loginUser());
@@ -67,9 +69,15 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot document = task.getResult().getDocuments().get(0);
                         String storedPassword = document.getString("password");
+                        String username = document.getString("username");
+                        String userId = document.getId();
+
                         if (password.equals(storedPassword)) {
                             // Login success
                             showSuccessMessage();
+                            // Save user session
+                            sessionManager.saveUserSession(userId, email, username);
+
                             // Navigate to MainActivity
                             if (getActivity() != null) {
                                 startActivity(new Intent(getActivity(), MainActivity.class));

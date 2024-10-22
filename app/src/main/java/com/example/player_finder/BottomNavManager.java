@@ -17,7 +17,7 @@ public class BottomNavManager {
             if (itemId == R.id.nav_profile) {
                 fragmentNavigator.navigateTo(new ProfileFragment());
             } else if (itemId == R.id.nav_my_games) {
-                fragmentNavigator.navigateTo(new MyGamesFragment());
+                fragmentNavigator.navigateTo(new GamesFragment());
             } else if (itemId == R.id.nav_friends) {
                 fragmentNavigator.navigateTo(new FriendsFragment());
             }
