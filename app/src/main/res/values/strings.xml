@@ -43,5 +43,6 @@
     <string name="game_title">game_title</string>
     <string name="search_games">Search games...</string>
     <string name="search_friends">Search friends...</string>
+    <string name="my_friends">my friends</string>
 
 </resources>

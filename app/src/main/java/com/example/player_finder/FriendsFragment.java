@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button; // Import Button
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,6 +19,10 @@ public class FriendsFragment extends Fragment {
     private FriendAdapter friendAdapter;
     private List<User> userList; // Declare userList for better scope
     private DatabaseManager databaseManager; // Declare DatabaseManager instance
+    private UserSessionManager userSessionManager; // Declare UserSessionManager instance
+    private User currentUser; // To hold the current user
+    private Button myFriendsButton; // Declare My Friends button
+    private boolean showingAllFriends = true; // Flag to track the state of button
 
     @Nullable
     @Override
@@ -26,29 +31,43 @@ public class FriendsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        // Initialize RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Initialize UserSessionManager
+        userSessionManager = new UserSessionManager(getContext());
 
-        // Initialize DatabaseManager
-        databaseManager = new DatabaseManager();  // Assuming you have a default constructor
+        // Fetch the current user based on the stored user ID
+        String userId = userSessionManager.getUserId();
+        if (userId != null) {
+            databaseManager = new DatabaseManager(); // Initialize DatabaseManager
 
-        // Fetch users from database asynchronously
-        CompletableFuture<List<User>> fetchUsersFuture = databaseManager.fetchAllUsers();
+            // Fetch the current user from the database
+            CompletableFuture<User> fetchUserFuture = databaseManager.fetchUserById(userId);
+            fetchUserFuture.thenAccept(user -> {
+                currentUser = user; // Store the current user
 
-        // When the data is fetched, update the RecyclerView adapter
-        fetchUsersFuture.thenAccept(fetchedUsers -> {
-            // Update user list and adapter
-            userList = fetchedUsers;
+                // Fetch users from database asynchronously
+                CompletableFuture<List<User>> fetchUsersFuture = databaseManager.fetchAllUsers();
 
-            // Set up the adapter with the fetched users
-            friendAdapter = new FriendAdapter(userList);
-            recyclerView.setAdapter(friendAdapter);
-        }).exceptionally(ex -> {
-            // Handle any exceptions that occur during fetching
-            ex.printStackTrace();
-            return null;
-        });
+                // When the data is fetched, update the RecyclerView adapter
+                fetchUsersFuture.thenAccept(fetchedUsers -> {
+                    // Update user list and adapter
+                    userList = fetchedUsers;
+
+                    // Set up the adapter with the fetched users
+                    friendAdapter = new FriendAdapter(userList, currentUser, userId); // Pass current user if needed
+                    RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(friendAdapter);
+                }).exceptionally(ex -> {
+                    // Handle any exceptions that occur during fetching users
+                    ex.printStackTrace();
+                    return null;
+                });
+            }).exceptionally(ex -> {
+                // Handle any exceptions that occur during fetching user
+                ex.printStackTrace();
+                return null;
+            });
+        }
 
         // Initialize the SearchView and set up search filtering
         SearchView searchView = view.findViewById(R.id.searchView);
@@ -67,6 +86,20 @@ public class FriendsFragment extends Fragment {
                     friendAdapter.filter(newText); // Apply filter as text changes
                 }
                 return false;
+            }
+        });
+
+        // Handle "My Friends" button click to filter the user's friends
+        myFriendsButton = view.findViewById(R.id.myFriendsButton); // Ensure the button is present in the layout
+        myFriendsButton.setOnClickListener(v -> {
+            if (showingAllFriends) {
+                friendAdapter.showMyFriends(); // Show only the user's friends
+                myFriendsButton.setText("All Friends");
+                showingAllFriends = false;
+            } else {
+                friendAdapter.showAllFriends(); // Show all friends again
+                myFriendsButton.setText("My Friends");
+                showingAllFriends = true;
             }
         });
 
