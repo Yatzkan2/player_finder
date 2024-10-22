@@ -11,13 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class GamesFragment extends Fragment {
 
     private GameAdapter gameAdapter;
-    private List<Game> gameList;
+    private List<Game> gameList; // Declare gameList for better scope
+    private DatabaseManager databaseManager; // Declare DatabaseManager instance
 
     @Nullable
     @Override
@@ -29,16 +30,25 @@ public class GamesFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize the game list with some Game objects
-        gameList = new ArrayList<>();
-        gameList.add(new Game("Fortnite"));
-        gameList.add(new Game("League of Legends"));
-        gameList.add(new Game("Minecraft"));
-        // Add more games as needed
+        // Initialize DatabaseManager
+        databaseManager = new DatabaseManager(); // Assuming you have a default constructor
 
-        // Set up the adapter
-        gameAdapter = new GameAdapter(gameList);
-        recyclerView.setAdapter(gameAdapter);
+        // Fetch games from database asynchronously
+        CompletableFuture<List<Game>> fetchGamesFuture = databaseManager.fetchAllGames();
+
+        // When the data is fetched, update the RecyclerView adapter
+        fetchGamesFuture.thenAccept(fetchedGames -> {
+            // Update game list and adapter
+            gameList = fetchedGames;
+
+            // Set up the adapter with the fetched games
+            gameAdapter = new GameAdapter(gameList);
+            recyclerView.setAdapter(gameAdapter);
+        }).exceptionally(ex -> {
+            // Handle any exceptions that occur during fetching
+            ex.printStackTrace();
+            return null;
+        });
 
         // Initialize the SearchView and set up search filtering
         SearchView searchView = view.findViewById(R.id.searchView);
