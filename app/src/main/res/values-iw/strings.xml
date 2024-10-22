@@ -46,5 +46,6 @@
     <string name="search_games">חפש משחק</string>
     <string name="search_friends">חפש חבר</string>
     <string name="my_friends">my friends</string>
+    <string name="chat">Chat</string>
 
 </resources>
