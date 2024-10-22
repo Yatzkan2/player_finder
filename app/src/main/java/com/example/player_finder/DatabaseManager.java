@@ -21,7 +21,25 @@ public class DatabaseManager {
     public DatabaseManager() {
         this.db = FirebaseFirestore.getInstance(); // Get Firestore instance
     }
+    //######## UPDATERS ################
+    // Update user field by ID
+    public CompletableFuture<Void> updateUserFieldById(String userId, String fieldName, Object value) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        CollectionReference usersCollection = db.collection("users");
 
+        // Use Firestore's update method
+        usersCollection.document(userId).update(fieldName, value)
+                .addOnSuccessListener(aVoid -> {
+                    future.complete(null); // Successfully updated
+                })
+                .addOnFailureListener(e -> {
+                    future.completeExceptionally(e); // Handle failure
+                });
+
+        return future;
+    }
+
+    //######## FETCHERS ################
     // Fetch user by ID
     public CompletableFuture<User> fetchUserById(String id) {
         CompletableFuture<User> future = new CompletableFuture<>();

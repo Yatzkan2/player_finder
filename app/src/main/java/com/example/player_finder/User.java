@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class User {
-    private final String id;
+    private String id;
     private String username;
     private String email;
     private String password;
@@ -51,6 +51,7 @@ public class User {
         return gamesList.contains(gameId); // Return true if game ID exists in the list
     }
 
+    //setters
     public void setPassword(String password) {
         this.password = password;
     }
@@ -63,6 +64,11 @@ public class User {
         this.email = email;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    //getters
     public String getId() {
         return id;
     }
