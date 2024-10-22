@@ -40,7 +40,10 @@
     <string name="search">חפש</string>
     <string name="add_game">הוסף משחק</string>
     <string name="add">הוסף</string>
-    <string name="friend_name">friend_name</string>
-    <string name="friend_email">friend_email</string>
+    <string name="friend_name">שם חבר</string>
+    <string name="friend_email">אימייל חבר</string>
+    <string name="game_title">שם המשחק</string>
+    <string name="search_games">חפש משחק</string>
+    <string name="search_friends">חפש חבר</string>
 
 </resources>

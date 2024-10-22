@@ -40,5 +40,8 @@
     <string name="add">Add</string>
     <string name="friend_name">friend_name</string>
     <string name="friend_email">friend_email</string>
+    <string name="game_title">game_title</string>
+    <string name="search_games">Search games...</string>
+    <string name="search_friends">Search friends...</string>
 
 </resources>
