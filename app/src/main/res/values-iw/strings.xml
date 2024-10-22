@@ -47,5 +47,8 @@
     <string name="search_friends">חפש חבר</string>
     <string name="my_friends">my friends</string>
     <string name="chat">Chat</string>
+    <string name="update_password">עדכן סיסמא</string>
+    <string name="new_password">סיסמא חדשה</string>
+    <string name="update_email">עדכן אימייל</string>
 
 </resources>

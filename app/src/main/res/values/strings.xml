@@ -41,9 +41,12 @@
     <string name="friend_name">friend_name</string>
     <string name="friend_email">friend_email</string>
     <string name="game_title">game_title</string>
-    <string name="search_games">Search games...</string>
-    <string name="search_friends">Search friends...</string>
+    <string name="search_games">Search games</string>
+    <string name="search_friends">Search friends</string>
     <string name="my_friends">my friends</string>
     <string name="chat">Chat</string>
+    <string name="update_password">Update Password</string>
+    <string name="new_password">New password</string>
+    <string name="update_email">Update Email</string>
 
 </resources>
