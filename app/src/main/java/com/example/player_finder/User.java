@@ -9,7 +9,7 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private final List<User> friendsList;
+    private final List<String> friendsList;
     private final List<String> gamesList; // Change from List<Game> to List<String> for game IDs
 
     // No-argument constructor required for Firestore deserialization
@@ -28,8 +28,10 @@ public class User {
         this.gamesList = new ArrayList<>();
     }
 
-    public void addFriend(User friend) {
-        friendsList.add(friend);
+    public void addFriend(String username) {
+
+        friendsList.add(username);
+
     }
 
     // Add game by ID
@@ -85,11 +87,19 @@ public class User {
         return password;
     }
 
-    public List<User> getFriendsList() {
+    public List<String> getFriendsList() {
         return friendsList;
     }
 
     public List<String> getGamesList() {
         return gamesList; // Return the list of game IDs
+    }
+
+    public boolean isFriend(String username) {
+        return friendsList.contains(username);
+    }
+
+    public void removeFriend(String username) {
+        friendsList.remove(username);
     }
 }

@@ -3,22 +3,31 @@ package com.example.player_finder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
 
     private final List<User> userList;
     private final List<User> userListFull; // To keep a copy of the full list for filtering
+    private DatabaseManager databaseManager; // Database manager instance
+    private User currentUser; // Reference to the current user
+    private final String userId; // User ID of the current user
+    private boolean isShowingMyFriends = false; // Flag to track if "My Friends" is displayed
 
     // Constructor
-    public FriendAdapter(List<User> userList) {
+    public FriendAdapter(List<User> userList, User currentUser, String userId) {
         this.userList = userList;
         this.userListFull = new ArrayList<>(userList); // Create a copy of the full list
+        this.databaseManager = new DatabaseManager(); // Initialize DatabaseManager
+        this.currentUser = currentUser; // Store the current user
+        this.userId = userId; // Store the user ID
     }
 
     @NonNull
@@ -32,13 +41,35 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.usernameText.setText(user.getUsername());
-        holder.emailText.setText(user.getEmail());
+        holder.friendName.setText(user.getUsername()); // Assuming User has getUsername method
 
-        // Add click listener for itemView
-        holder.itemView.setOnClickListener(v -> {
-            // Display Toast with the user's name when clicked
-            Toast.makeText(v.getContext(), "Clicked: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+        // Check if the user is already a friend
+        boolean isFriend = currentUser.isFriend(user.getUsername()); // Assuming User has isFriend method
+
+        // Set button text based on friendship status
+        holder.buttonAction.setText(isFriend ? "Remove" : "Add");
+
+        holder.buttonAction.setOnClickListener(v -> {
+            if (isFriend) {
+                currentUser.removeFriend(user.getUsername()); // Remove friend
+                databaseManager.updateUserFieldById(userId, "friendsList", currentUser.getFriendsList());
+                Toast.makeText(v.getContext(), "Removed: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+            } else {
+                currentUser.addFriend(user.getUsername()); // Add friend
+                databaseManager.updateUserFieldById(userId, "friendsList", currentUser.getFriendsList());
+                Toast.makeText(v.getContext(), "Added: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+            }
+            // Re-render based on current view
+            if (isShowingMyFriends) {
+                showMyFriends(); // Re-filter to show the updated "My Friends" list
+            } else {
+                notifyItemChanged(position); // Just refresh the item if in "All Friends"
+            }
+        });
+
+        // Chat button functionality
+        holder.buttonChat.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Chat button clicked for: " + user.getUsername(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -49,14 +80,31 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     // ViewHolder class for RecyclerView
     public static class FriendViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameText;
-        TextView emailText;
+        TextView friendName; // TextView to show friend's name
+        Button buttonAction; // Action button (Add/Remove)
+        Button buttonChat; // Chat button
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);
-            usernameText = itemView.findViewById(R.id.friend_username);
-            emailText = itemView.findViewById(R.id.friend_email);
+            friendName = itemView.findViewById(R.id.friend_username); // Adjust according to your layout
+            buttonAction = itemView.findViewById(R.id.button_action); // Action button
+            buttonChat = itemView.findViewById(R.id.button_chat); // Chat button
         }
+    }
+
+    // Method to show only the user's friends
+    public void showMyFriends() {
+        isShowingMyFriends = true; // Track that we are in "My Friends" mode
+        List<User> filteredList = userListFull.stream()
+                .filter(user -> currentUser.isFriend(user.getUsername()))
+                .collect(Collectors.toList());
+        applyListChanges(filteredList);
+    }
+
+    // Method to show all users
+    public void showAllFriends() {
+        isShowingMyFriends = false; // Track that we are in "All Users" mode
+        applyListChanges(userListFull);
     }
 
     // Filter method
