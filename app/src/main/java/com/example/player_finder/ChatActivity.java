@@ -140,6 +140,7 @@ public class ChatActivity extends AppCompatActivity {
                         scrollToBottom();
                         sendButton.setEnabled(true);
                     });
+                    loadMessages();
                 })
                 .exceptionally(e -> {
                     runOnUiThread(() -> {
