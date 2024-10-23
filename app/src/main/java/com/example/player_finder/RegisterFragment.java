@@ -22,6 +22,8 @@ public class RegisterFragment extends Fragment {
     private EditText passwordInput;
     private EditText confirmPasswordInput;
     private FirebaseFirestore firestore;
+    private UserSessionManager sessionManager;
+    private String userId;
 
     @Nullable
     @Override
@@ -38,6 +40,7 @@ public class RegisterFragment extends Fragment {
 
         // Initialize Firebase
         firestore = FirebaseFirestore.getInstance();
+        sessionManager = new UserSessionManager(getContext());
 
         // Set register button click listener
         registerButton.setOnClickListener(v -> registerUser());
@@ -69,6 +72,9 @@ public class RegisterFragment extends Fragment {
         // Add user to Firebase
         firestore.collection("users").add(user)
                 .addOnSuccessListener(documentReference -> {
+                    // Save user session
+                    userId = documentReference.getId();
+                    sessionManager.saveUserSession(userId, email, username);
                     showSuccessMessage();
                     // Navigate to MainActivity
                     if (getActivity() != null) {
