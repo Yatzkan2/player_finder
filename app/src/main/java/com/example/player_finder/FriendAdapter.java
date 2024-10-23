@@ -1,13 +1,18 @@
 package com.example.player_finder;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,18 +21,20 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     private final List<User> userList;
     private final List<User> userListFull; // To keep a copy of the full list for filtering
-    private DatabaseManager databaseManager; // Database manager instance
-    private User currentUser; // Reference to the current user
+    private final DatabaseManager databaseManager; // Database manager instance
+    private final User currentUser; // Reference to the current user
     private final String userId; // User ID of the current user
     private boolean isShowingMyFriends = false; // Flag to track if "My Friends" is displayed
+    private final Context context; // Context for launching activities
 
     // Constructor
-    public FriendAdapter(List<User> userList, User currentUser, String userId) {
+    public FriendAdapter(List<User> userList, User currentUser, String userId, Context context) {
         this.userList = userList;
         this.userListFull = new ArrayList<>(userList); // Create a copy of the full list
         this.databaseManager = new DatabaseManager(); // Initialize DatabaseManager
         this.currentUser = currentUser; // Store the current user
         this.userId = userId; // Store the user ID
+        this.context = context; // Store the context
     }
 
     @NonNull
@@ -67,9 +74,23 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
             }
         });
 
-        // Chat button functionality
+        // Inside the onBindViewHolder method, update the buttonChat click listener:
         holder.buttonChat.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Chat button clicked for: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+            Log.d("FriendAdapter", "Chat button clicked");
+            Log.d("FriendAdapter", "Current userId: " + userId);
+            Log.d("FriendAdapter", "Friend's userId: " + user.getId());
+
+            try {
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("senderId", userId);
+                intent.putExtra("receiverId", user.getId());
+                // Add flags to create a new task if needed
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                Log.e("FriendAdapter", "Error starting ChatActivity", e);
+                Toast.makeText(context, "Error opening chat", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

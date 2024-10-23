@@ -53,7 +53,7 @@ public class FriendsFragment extends Fragment {
                     userList = fetchedUsers;
 
                     // Set up the adapter with the fetched users
-                    friendAdapter = new FriendAdapter(userList, currentUser, userId); // Pass current user if needed
+                    friendAdapter = new FriendAdapter(userList, currentUser, userId, requireContext());  // Pass current user if needed
                     RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     recyclerView.setAdapter(friendAdapter);
@@ -94,11 +94,11 @@ public class FriendsFragment extends Fragment {
         myFriendsButton.setOnClickListener(v -> {
             if (showingAllFriends) {
                 friendAdapter.showMyFriends(); // Show only the user's friends
-                myFriendsButton.setText("All Friends");
+                myFriendsButton.setText("all_friends");
                 showingAllFriends = false;
             } else {
                 friendAdapter.showAllFriends(); // Show all friends again
-                myFriendsButton.setText("My Friends");
+                myFriendsButton.setText("my_friends");
                 showingAllFriends = true;
             }
         });

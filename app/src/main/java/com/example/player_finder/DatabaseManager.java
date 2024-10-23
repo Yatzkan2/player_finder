@@ -102,6 +102,7 @@ public class DatabaseManager {
                 for (DocumentSnapshot document : task.getResult()) {
                     User user = document.toObject(User.class);
                     if (user != null) {
+                        user.setId(document.getId()); // Set the Firestore document ID
                         userList.add(user);
                     }
                 }

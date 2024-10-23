@@ -50,5 +50,9 @@
     <string name="update_password">עדכן סיסמא</string>
     <string name="new_password">סיסמא חדשה</string>
     <string name="update_email">עדכן אימייל</string>
+    <string name="start_new_chat">צאט חדש</string>
+    <string name="last_message">הודעה אחרונה</string>
+    <string name="participants">משתתפים</string>'
+    <string name="all_friends">כל החברים</string>">
 
 </resources>

@@ -48,5 +48,10 @@
     <string name="update_password">Update Password</string>
     <string name="new_password">New password</string>
     <string name="update_email">Update Email</string>
+    <string name="start_new_chat">start new chat</string>
+    <string name="last_message">Last message</string>
+    <string name="participants">participants</string>
+    <string name="all_friends">All friends</string>">
+
 
 </resources>
