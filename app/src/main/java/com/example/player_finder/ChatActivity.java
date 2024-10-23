@@ -119,9 +119,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onError(Exception e) {
                 Log.e(TAG, "Error loading messages", e);
-                Toast.makeText(ChatActivity.this,
-                        "Error loading messages", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
             }
         });
     }
