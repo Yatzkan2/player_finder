@@ -1,16 +1,15 @@
 package com.example.player_finder;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;  // Import MenuItem
-import androidx.annotation.NonNull;  // Import NonNull annotation
+import android.view.View;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class AuthActivity extends AppCompatActivity {
 
     private FragmentNavigator fragmentNavigator;
-    private AppBarManager appBarManager;
+    private LanguageManager languageManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,26 +22,24 @@ public class AuthActivity extends AppCompatActivity {
         //dbManager.seedDatabase();
         //###############################################
 
-        // Initialize AppBarManager with "false" indicating this is AuthActivity
-        Toolbar toolbar = findViewById(R.id.myToolBar);
-        appBarManager = new AppBarManager(this, false);
-        appBarManager.setupAppBar(toolbar);  // Set up the AppBar
+        // Initialize LanguageManager
+        languageManager = new LanguageManagerImpl(this);
 
         // Set up the fragment navigator for switching between login and register fragments
         fragmentNavigator = new FragmentNavigatorImpl(getSupportFragmentManager(), R.id.auth_frame_container);
 
         // Show LoginFragment by default
         fragmentNavigator.navigateTo(new LoginFragment());
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return appBarManager.onCreateOptionsMenu(menu);  // Delegate menu inflation to AppBarManager
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return appBarManager.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);  // Delegate to AppBarManager
+        // Set up click listener for language icon
+        ImageView languageIcon = findViewById(R.id.language_icon);
+        languageIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                languageManager.toggleLanguage();
+                recreate(); // Recreate activity to apply the language change
+            }
+        });
     }
 
     public void showLoginFragment() {

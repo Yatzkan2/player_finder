@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize AppBarManager with "true" indicating this is MainActivity
         Toolbar toolbar = findViewById(R.id.myToolBar);
-        appBarManager = new AppBarManager(this, true);
+        appBarManager = new AppBarManager(this);
         appBarManager.setupAppBar(toolbar);  // Set up the AppBar
 
         // Initialize BottomNavManager locally
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return appBarManager.onCreateOptionsMenu(menu);  // Delegate menu inflation to AppBarManager
+        return appBarManager.onCreateOptionsMenu(menu,true);  // Delegate menu inflation to AppBarManager
     }
 
     @Override

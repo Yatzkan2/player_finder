@@ -6,5 +6,5 @@
     <item
         android:id="@+id/action_language_toggle"
         android:title="@string/language_toggle"
-        app:showAsAction="never" />  <!-- Use app:showAsAction -->
+        app:showAsAction="always" />  <!-- Use app:showAsAction -->
 </menu>
