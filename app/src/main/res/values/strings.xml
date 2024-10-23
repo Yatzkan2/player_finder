@@ -51,7 +51,7 @@
     <string name="start_new_chat">start new chat</string>
     <string name="last_message">Last message</string>
     <string name="participants">participants</string>
-    Last message
+    <string name="all_friends">All friends</string>">
 
 
 </resources>

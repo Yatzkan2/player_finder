@@ -7,20 +7,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
-
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private final List<Message> messages;
     private final String currentUserId;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-    public ChatAdapter(String currentUserId) {
+    public MessageAdapter(String currentUserId) {
         this.messages = new ArrayList<>();
         this.currentUserId = currentUserId;
     }
@@ -36,7 +34,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messages.get(position);
-        boolean isSentByMe = message.getSenderId().equals(currentUserId);
+        boolean isSentByCurrentUser = message.getSenderId().equals(currentUserId);
 
         // Set message text
         holder.textMessage.setText(message.getText());
@@ -46,30 +44,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
             holder.textTimestamp.setText(dateFormat.format(message.getTimestamp()));
         }
 
-        // Adjust layout based on message sender
-        ConstraintLayout.LayoutParams messageParams =
-                (ConstraintLayout.LayoutParams) holder.textMessage.getLayoutParams();
-        ConstraintLayout.LayoutParams timestampParams =
-                (ConstraintLayout.LayoutParams) holder.textTimestamp.getLayoutParams();
-
-        if (isSentByMe) {
-            // Sent message styling
+        // Apply styles based on message sender
+        if (isSentByCurrentUser) {
+            // Sent message style
             holder.textMessage.setBackgroundResource(R.drawable.bg_message_sent);
-            messageParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-            messageParams.startToStart = ConstraintLayout.LayoutParams.UNSET;
-            timestampParams.endToEnd = holder.textMessage.getId();
-            timestampParams.startToStart = ConstraintLayout.LayoutParams.UNSET;
+            holder.messageLayout.setGravity(Gravity.END);
+            holder.textTimestamp.setGravity(Gravity.END);
         } else {
-            // Received message styling
+            // Received message style
             holder.textMessage.setBackgroundResource(R.drawable.bg_message_received);
-            messageParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-            messageParams.endToEnd = ConstraintLayout.LayoutParams.UNSET;
-            timestampParams.startToStart = holder.textMessage.getId();
-            timestampParams.endToEnd = ConstraintLayout.LayoutParams.UNSET;
+            holder.messageLayout.setGravity(Gravity.START);
+            holder.textTimestamp.setGravity(Gravity.START);
         }
-
-        holder.textMessage.setLayoutParams(messageParams);
-        holder.textTimestamp.setLayoutParams(timestampParams);
     }
 
     @Override
@@ -83,19 +69,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         notifyDataSetChanged();
     }
 
-    public void addMessage(Message message) {
-        messages.add(message);
-        notifyItemInserted(messages.size() - 1);
-    }
-
     static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView textMessage;
         TextView textTimestamp;
+        LinearLayout messageLayout;
 
-        public MessageViewHolder(@NonNull View itemView) {
+        MessageViewHolder(View itemView) {
             super(itemView);
             textMessage = itemView.findViewById(R.id.textMessage);
             textTimestamp = itemView.findViewById(R.id.textTimestamp);
+            messageLayout = itemView.findViewById(R.id.messageLayout);
         }
     }
 }

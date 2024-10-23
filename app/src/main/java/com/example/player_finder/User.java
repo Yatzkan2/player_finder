@@ -2,25 +2,22 @@ package com.example.player_finder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class User {
-    private String id;
+    private String id; // This will hold the Firestore document ID
     private String username;
     private String email;
     private String password;
     private final List<String> friendsList;
-    private final List<String> gamesList; // Change from List<Game> to List<String> for game IDs
+    private final List<String> gamesList;
 
     // No-argument constructor required for Firestore deserialization
     public User() {
-        this.id = UUID.randomUUID().toString();  // Generate a new ID if needed
         this.friendsList = new ArrayList<>();
         this.gamesList = new ArrayList<>();
     }
 
     public User(String username, String email, String password) {
-        this.id = UUID.randomUUID().toString();
         this.username = username;
         this.email = email;
         this.password = password;
@@ -28,34 +25,9 @@ public class User {
         this.gamesList = new ArrayList<>();
     }
 
-    public void addFriend(String username) {
-
-        friendsList.add(username);
-
-    }
-
-    // Add game by ID
-    public void addGame(String gameTitle) {
-        if (!gamesList.contains(gameTitle)) {
-            gamesList.add(gameTitle); // Add the game ID to the list
-            // Save to database if needed
-        }
-    }
-
-    // Remove game by ID
-    public void removeGame(String gameTitle) {
-        gamesList.remove(gameTitle); // Remove the game ID from the list
-        // Save to database if needed
-    }
-
-    // Check if game exists in user's list
-    public boolean hasGame(String gameTitle) {
-        return gamesList.contains(gameTitle); // Return true if game ID exists in the list
-    }
-
-    //setters
-    public void setPassword(String password) {
-        this.password = password;
+    // Setters
+    public void setId(String id) {
+        this.id = id; // Firestore document ID
     }
 
     public void setUsername(String username) {
@@ -66,13 +38,13 @@ public class User {
         this.email = email;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    //getters
+    // Getters
     public String getId() {
-        return id;
+        return id; // Returns Firestore document ID
     }
 
     public String getUsername() {
@@ -92,14 +64,34 @@ public class User {
     }
 
     public List<String> getGamesList() {
-        return gamesList; // Return the list of game IDs
+        return gamesList;
+    }
+
+    // Methods for friends management
+    public void addFriend(String username) {
+        friendsList.add(username);
+    }
+
+    public void removeFriend(String username) {
+        friendsList.remove(username);
     }
 
     public boolean isFriend(String username) {
         return friendsList.contains(username);
     }
 
-    public void removeFriend(String username) {
-        friendsList.remove(username);
+    // Methods for games management
+    public void addGame(String gameTitle) {
+        if (!gamesList.contains(gameTitle)) {
+            gamesList.add(gameTitle);
+        }
+    }
+
+    public void removeGame(String gameTitle) {
+        gamesList.remove(gameTitle);
+    }
+
+    public boolean hasGame(String gameTitle) {
+        return gamesList.contains(gameTitle);
     }
 }
