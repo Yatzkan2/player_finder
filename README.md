@@ -12,7 +12,7 @@ Player Finder is a simple Android application designed to help users find and co
 ## Contributors
 - **Yair Yatzkan** - [GitHub Profile](https://github.com/Yatzkan2)
 - **Rottem Dressler** - [GitHub Profile](#)
-- **Michael Dennis** - [GitHub Profile](#)
+- **Michael Dennis** - [GitHub Profile](https://github.com/themoshe12)
 
 ## Demo Video
 [Placeholder for Video](#)
